@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Coleção de Jogos de Super Nintendo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 2rem;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h1 {
+            color: #1c1e21;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        .card h2 {
+            font-size: 1.25rem;
+            margin-top: 0;
+            color: #007bff;
+        }
+        .card p {
+            margin: 0.5rem 0 0;
+            font-size: 1rem;
+        }
+        .card .launch-year {
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Minha Lista de Desejos de Super Nintendo</h1>
+    </header>
+    <div class="container" id="game-list">
+        <!-- Cards dos jogos serão inseridos aqui via JavaScript -->
+    </div>
+
+    <script>
+        const games = [
+            { "citado": "Super Mario World", "completo": "Super Mario World", "lancamento": 1991 },
+            { "citado": "Zelda", "completo": "The Legend of Zelda: A Link to the Past", "lancamento": 1992 },
+            { "citado": "DK 1", "completo": "Donkey Kong Country", "lancamento": 1994 },
+            { "citado": "DK 2", "completo": "Donkey Kong Country 2: Diddy's Kong Quest", "lancamento": 1995 },
+            { "citado": "Mortal Kombat", "completo": "Mortal Kombat", "lancamento": 1993 },
+            { "citado": "Street Fighter 2", "completo": "Street Fighter II: The World Warrior", "lancamento": 1992 },
+            { "citado": "ISSS Deluxe", "completo": "International Superstar Soccer Deluxe", "lancamento": 1995 },
+            { "citado": "Super Metroid", "completo": "Super Metroid", "lancamento": 1994 },
+            { "citado": "Super Mario All Star", "completo": "Super Mario All-Stars", "lancamento": 1993 },
+            { "citado": "Yoshi's Island", "completo": "Super Mario World 2: Yoshi's Island", "lancamento": 1995 },
+            { "citado": "Aladdin", "completo": "Disney's Aladdin", "lancamento": 1993 },
+            { "citado": "Rei Leão", "completo": "Disney's The Lion King", "lancamento": 1994 },
+            { "citado": "Castlevania IV", "completo": "Super Castlevania IV", "lancamento": 1991 },
+            { "citado": "Indiana Jones", "completo": "Indiana Jones' Greatest Adventures", "lancamento": 1994 },
+            { "citado": "Prince of Persia", "completo": "Prince of Persia", "lancamento": 1992 },
+            { "citado": "Super Mario RPG", "completo": "Super Mario RPG: Legend of the Seven Stars", "lancamento": 1996 },
+            { "citado": "Super Mario Kart", "completo": "Super Mario Kart", "lancamento": 1992 },
+            { "citado": "F-Zero", "completo": "F-Zero", "lancamento": 1991 },
+            { "citado": "Top Gear", "completo": "Top Gear", "lancamento": 1992 },
+            { "citado": "Top Gear 2", "completo": "Top Gear 2", "lancamento": 1993 },
+            { "citado": "Lemmings", "completo": "Lemmings", "lancamento": 1992 },
+            { "citado": "Tartaruga Ninja", "completo": "Teenage Mutant Ninja Turtles IV: Turtles in Time", "lancamento": 1992 },
+            { "citado": "Simpsons", "completo": "The Simpsons: Bart's Nightmare", "lancamento": 1992 },
+            { "citado": "Mickey", "completo": "The Magical Quest Starring Mickey Mouse", "lancamento": 1992 }
+        ];
+
+        const gameListContainer = document.getElementById('game-list');
+
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const title = document.createElement('h2');
+            title.textContent = game.citado;
+
+            const fullName = document.createElement('p');
+            fullName.textContent = game.completo;
+
+            const launchYear = document.createElement('p');
+            launchYear.className = 'launch-year';
+            launchYear.textContent = `Lançamento (EUA): ${game.lancamento}`;
+            
+            card.appendChild(title);
+            card.appendChild(fullName);
+            card.appendChild(launchYear);
+
+            gameListContainer.appendChild(card);
+        });
+    </script>
+</body>
+</html>
