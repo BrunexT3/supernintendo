@@ -3,113 +3,506 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Coleção de Jogos de Super Nintendo</title>
+    <title>SNES Wishlist - Minha Lista de Desejos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            margin: 0;
-            padding: 2rem;
+        :root {
+            --snes-purple: #4f2d7f;
+            --snes-red: #d32f2f;
+            --snes-blue: #1565c0;
+            --snes-green: #2e7d32;
+            --snes-yellow: #f9a825;
+            --snes-gray: #37474f;
+            --bg-dark: #0d0d0d;
+            --bg-card: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
         }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background:
+                radial-gradient(ellipse at 20% 80%, rgba(79, 45, 127, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(21, 101, 192, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(211, 47, 47, 0.05) 0%, transparent 70%);
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Scanlines effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1) 0px,
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            opacity: 0.3;
+        }
+
+        /* Header */
         header {
             text-align: center;
-            margin-bottom: 2rem;
+            padding: 3rem 1rem;
+            position: relative;
         }
-        h1 {
-            color: #1c1e21;
+
+        .logo-container {
+            display: inline-block;
+            position: relative;
         }
+
+        .logo {
+            font-family: 'Press Start 2P', cursive;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            background: linear-gradient(135deg, var(--snes-red), var(--snes-yellow), var(--snes-green), var(--snes-blue));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientFlow 5s ease infinite;
+            text-shadow: none;
+            letter-spacing: 2px;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-weight: 400;
+        }
+
+        .game-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .game-count span {
+            font-weight: 700;
+            color: var(--snes-yellow);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            padding: 0 1rem 2rem;
+        }
+
+        .filter-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--snes-purple);
+            color: var(--text-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--snes-purple);
+            border-color: var(--snes-purple);
+            color: white;
+        }
+
+        /* Grid */
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 1.5rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 0 1.5rem 4rem;
         }
+
+        /* Cards */
         .card {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 1.5rem;
-            transition: transform 0.2s, box-shadow 0.2s;
+            background: var(--bg-card);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: cardFadeIn 0.6s ease forwards;
         }
+
+        .card:nth-child(1) { animation-delay: 0.05s; }
+        .card:nth-child(2) { animation-delay: 0.1s; }
+        .card:nth-child(3) { animation-delay: 0.15s; }
+        .card:nth-child(4) { animation-delay: 0.2s; }
+        .card:nth-child(5) { animation-delay: 0.25s; }
+        .card:nth-child(6) { animation-delay: 0.3s; }
+        .card:nth-child(7) { animation-delay: 0.35s; }
+        .card:nth-child(8) { animation-delay: 0.4s; }
+
+        @keyframes cardFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(79, 45, 127, 0.5);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(79, 45, 127, 0.2);
         }
-        .card h2 {
-            font-size: 1.25rem;
-            margin-top: 0;
-            color: #007bff;
+
+        /* Box art placeholder */
+        .box-art {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(145deg, #252540, #1a1a2e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        .card p {
-            margin: 0.5rem 0 0;
+
+        .box-art::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.03) 50%, transparent 60%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .box-art-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .box-art-placeholder svg {
+            width: 48px;
+            height: 48px;
+            opacity: 0.5;
+        }
+
+        .box-art-placeholder span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .box-art img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .box-art img {
+            transform: scale(1.1);
+        }
+
+        /* Card content */
+        .card-content {
+            padding: 1.25rem;
+        }
+
+        .card-title {
             font-size: 1rem;
+            font-weight: 600;
+            line-height: 1.4;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
         }
-        .card .launch-year {
-            font-style: italic;
-            color: #666;
+
+        /* Card footer */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .genre-tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .year-badge {
+            padding: 0.35rem 0.7rem;
+            background: var(--snes-purple);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        /* SNES Controller decoration */
+        .controller-deco {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            opacity: 0.1;
+            width: 150px;
+            pointer-events: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 2rem 1rem;
+            }
+
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1rem;
+                padding: 0 1rem 3rem;
+            }
+
+            .box-art {
+                height: 180px;
+            }
+        }
+
+        /* Loading state */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .loading-dots span {
+            width: 12px;
+            height: 12px;
+            background: var(--snes-purple);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
+    <div class="bg-animation"></div>
+    <div class="scanlines"></div>
+
     <header>
-        <h1>Minha Lista de Desejos de Super Nintendo</h1>
+        <div class="logo-container">
+            <h1 class="logo">SNES WISHLIST</h1>
+        </div>
+        <div class="game-count">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <circle cx="8" cy="12" r="2"/>
+                <circle cx="16" cy="12" r="2"/>
+            </svg>
+            <span id="total-games">0</span> jogos na lista
+        </div>
     </header>
-    <div class="container" id="game-list">
-        <!-- Cards dos jogos serão inseridos aqui via JavaScript -->
+
+    <div class="filters">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="platformer">Plataforma</button>
+        <button class="filter-btn" data-filter="action">Acao</button>
+        <button class="filter-btn" data-filter="racing">Corrida</button>
+        <button class="filter-btn" data-filter="sports">Esportes</button>
+        <button class="filter-btn" data-filter="rpg">RPG</button>
+        <button class="filter-btn" data-filter="puzzle">Puzzle</button>
     </div>
+
+    <div class="container" id="game-list"></div>
+
+    <svg class="controller-deco" viewBox="0 0 100 60" fill="currentColor">
+        <rect x="5" y="10" width="90" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="25" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="75" cy="25" r="4"/>
+        <circle cx="75" cy="35" r="4"/>
+        <circle cx="70" cy="30" r="4"/>
+        <circle cx="80" cy="30" r="4"/>
+        <rect x="42" y="28" width="16" height="4" rx="1"/>
+    </svg>
 
     <script>
         const games = [
-            { "citado": "Super Mario World", "completo": "Super Mario World", "lancamento": 1991 },
-            { "citado": "Zelda", "completo": "The Legend of Zelda: A Link to the Past", "lancamento": 1992 },
-            { "citado": "DK 1", "completo": "Donkey Kong Country", "lancamento": 1994 },
-            { "citado": "DK 2", "completo": "Donkey Kong Country 2: Diddy's Kong Quest", "lancamento": 1995 },
-            { "citado": "Mortal Kombat", "completo": "Mortal Kombat", "lancamento": 1993 },
-            { "citado": "Street Fighter 2", "completo": "Street Fighter II: The World Warrior", "lancamento": 1992 },
-            { "citado": "ISSS Deluxe", "completo": "International Superstar Soccer Deluxe", "lancamento": 1995 },
-            { "citado": "Super Metroid", "completo": "Super Metroid", "lancamento": 1994 },
-            { "citado": "Super Mario All Star", "completo": "Super Mario All-Stars", "lancamento": 1993 },
-            { "citado": "Yoshi's Island", "completo": "Super Mario World 2: Yoshi's Island", "lancamento": 1995 },
-            { "citado": "Aladdin", "completo": "Disney's Aladdin", "lancamento": 1993 },
-            { "citado": "Rei Leão", "completo": "Disney's The Lion King", "lancamento": 1994 },
-            { "citado": "Castlevania IV", "completo": "Super Castlevania IV", "lancamento": 1991 },
-            { "citado": "Indiana Jones", "completo": "Indiana Jones' Greatest Adventures", "lancamento": 1994 },
-            { "citado": "Prince of Persia", "completo": "Prince of Persia", "lancamento": 1992 },
-            { "citado": "Super Mario RPG", "completo": "Super Mario RPG: Legend of the Seven Stars", "lancamento": 1996 },
-            { "citado": "Super Mario Kart", "completo": "Super Mario Kart", "lancamento": 1992 },
-            { "citado": "F-Zero", "completo": "F-Zero", "lancamento": 1991 },
-            { "citado": "Top Gear", "completo": "Top Gear", "lancamento": 1992 },
-            { "citado": "Top Gear 2", "completo": "Top Gear 2", "lancamento": 1993 },
-            { "citado": "Lemmings", "completo": "Lemmings", "lancamento": 1992 },
-            { "citado": "Tartaruga Ninja", "completo": "Teenage Mutant Ninja Turtles IV: Turtles in Time", "lancamento": 1992 },
-            { "citado": "Simpsons", "completo": "The Simpsons: Bart's Nightmare", "lancamento": 1992 },
-            { "citado": "Mickey", "completo": "The Magical Quest Starring Mickey Mouse", "lancamento": 1992 }
+            { citado: "Super Mario World", completo: "Super Mario World", lancamento: 1991, genero: "platformer", boxArt: "" },
+            { citado: "Zelda", completo: "The Legend of Zelda: A Link to the Past", lancamento: 1992, genero: "action", boxArt: "" },
+            { citado: "DK 1", completo: "Donkey Kong Country", lancamento: 1994, genero: "platformer", boxArt: "" },
+            { citado: "DK 2", completo: "Donkey Kong Country 2: Diddy's Kong Quest", lancamento: 1995, genero: "platformer", boxArt: "" },
+            { citado: "Mortal Kombat", completo: "Mortal Kombat", lancamento: 1993, genero: "action", boxArt: "" },
+            { citado: "Street Fighter 2", completo: "Street Fighter II: The World Warrior", lancamento: 1992, genero: "action", boxArt: "" },
+            { citado: "ISSS Deluxe", completo: "International Superstar Soccer Deluxe", lancamento: 1995, genero: "sports", boxArt: "" },
+            { citado: "Super Metroid", completo: "Super Metroid", lancamento: 1994, genero: "action", boxArt: "" },
+            { citado: "Super Mario All Star", completo: "Super Mario All-Stars", lancamento: 1993, genero: "platformer", boxArt: "" },
+            { citado: "Yoshi's Island", completo: "Super Mario World 2: Yoshi's Island", lancamento: 1995, genero: "platformer", boxArt: "" },
+            { citado: "Aladdin", completo: "Disney's Aladdin", lancamento: 1993, genero: "platformer", boxArt: "" },
+            { citado: "Rei Leao", completo: "Disney's The Lion King", lancamento: 1994, genero: "platformer", boxArt: "" },
+            { citado: "Castlevania IV", completo: "Super Castlevania IV", lancamento: 1991, genero: "action", boxArt: "" },
+            { citado: "Indiana Jones", completo: "Indiana Jones' Greatest Adventures", lancamento: 1994, genero: "action", boxArt: "" },
+            { citado: "Prince of Persia", completo: "Prince of Persia", lancamento: 1992, genero: "action", boxArt: "" },
+            { citado: "Super Mario RPG", completo: "Super Mario RPG: Legend of the Seven Stars", lancamento: 1996, genero: "rpg", boxArt: "" },
+            { citado: "Super Mario Kart", completo: "Super Mario Kart", lancamento: 1992, genero: "racing", boxArt: "" },
+            { citado: "F-Zero", completo: "F-Zero", lancamento: 1991, genero: "racing", boxArt: "" },
+            { citado: "Top Gear", completo: "Top Gear", lancamento: 1992, genero: "racing", boxArt: "" },
+            { citado: "Top Gear 2", completo: "Top Gear 2", lancamento: 1993, genero: "racing", boxArt: "" },
+            { citado: "Lemmings", completo: "Lemmings", lancamento: 1992, genero: "puzzle", boxArt: "" },
+            { citado: "Tartaruga Ninja", completo: "Teenage Mutant Ninja Turtles IV: Turtles in Time", lancamento: 1992, genero: "action", boxArt: "" },
+            { citado: "Simpsons", completo: "The Simpsons: Bart's Nightmare", lancamento: 1992, genero: "platformer", boxArt: "" },
+            { citado: "Mickey", completo: "The Magical Quest Starring Mickey Mouse", lancamento: 1992, genero: "platformer", boxArt: "" }
         ];
 
-        const gameListContainer = document.getElementById('game-list');
+        const genreLabels = {
+            platformer: "Plataforma",
+            action: "Acao",
+            racing: "Corrida",
+            sports: "Esportes",
+            rpg: "RPG",
+            puzzle: "Puzzle"
+        };
 
-        games.forEach(game => {
+        const gameListContainer = document.getElementById('game-list');
+        const totalGamesEl = document.getElementById('total-games');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        function createCard(game, index) {
             const card = document.createElement('div');
             card.className = 'card';
+            card.dataset.genre = game.genero;
+            card.style.animationDelay = (index * 0.05) + 's';
 
-            const title = document.createElement('h2');
-            title.textContent = game.citado;
+            const boxArtContent = game.boxArt
+                ? '<img src="' + game.boxArt + '" alt="' + game.completo + ' Box Art">'
+                : '<div class="box-art-placeholder">' +
+                    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
+                        '<rect x="3" y="3" width="18" height="18" rx="2"/>' +
+                        '<circle cx="8.5" cy="8.5" r="1.5"/>' +
+                        '<path d="M21 15l-5-5L5 21"/>' +
+                    '</svg>' +
+                    '<span>Box Art</span>' +
+                  '</div>';
 
-            const fullName = document.createElement('p');
-            fullName.textContent = game.completo;
+            card.innerHTML =
+                '<div class="box-art">' + boxArtContent + '</div>' +
+                '<div class="card-content">' +
+                    '<h2 class="card-title">' + game.completo + '</h2>' +
+                    '<div class="card-footer">' +
+                        '<span class="genre-tag">' + genreLabels[game.genero] + '</span>' +
+                        '<span class="year-badge">' + game.lancamento + '</span>' +
+                    '</div>' +
+                '</div>';
 
-            const launchYear = document.createElement('p');
-            launchYear.className = 'launch-year';
-            launchYear.textContent = `Lançamento (EUA): ${game.lancamento}`;
-            
-            card.appendChild(title);
-            card.appendChild(fullName);
-            card.appendChild(launchYear);
+            return card;
+        }
 
-            gameListContainer.appendChild(card);
+        function renderGames(filter = 'all') {
+            gameListContainer.innerHTML = '';
+
+            const filteredGames = filter === 'all'
+                ? games
+                : games.filter(g => g.genero === filter);
+
+            filteredGames.forEach((game, index) => {
+                gameListContainer.appendChild(createCard(game, index));
+            });
+
+            totalGamesEl.textContent = filteredGames.length;
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGames(btn.dataset.filter);
+            });
         });
+
+        // Initial render
+        renderGames();
+        totalGamesEl.textContent = games.length;
     </script>
 </body>
 </html>
