@@ -365,6 +365,52 @@
             0%, 80%, 100% { transform: scale(0); }
             40% { transform: scale(1); }
         }
+
+        /* Comprado badge */
+        .comprado-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--snes-green);
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.4);
+        }
+
+        .comprado-badge .data {
+            font-size: 0.5rem;
+            font-weight: 400;
+            opacity: 0.85;
+        }
+
+        .card.comprado {
+            border-color: rgba(46, 125, 50, 0.3);
+        }
+
+        .card.comprado:hover {
+            border-color: rgba(46, 125, 50, 0.6);
+            box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Footer discreto */
+        .footer-info {
+            text-align: center;
+            padding: 2rem 1rem 3rem;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 0.65rem;
+        }
     </style>
 </head>
 <body>
@@ -397,6 +443,8 @@
 
     <div class="container" id="game-list"></div>
 
+    <div class="footer-info">SNES adquirido em 28/01/26</div>
+
     <svg class="controller-deco" viewBox="0 0 100 60" fill="currentColor">
         <rect x="5" y="10" width="90" height="40" rx="8" fill="none" stroke="currentColor" stroke-width="2"/>
         <circle cx="25" cy="30" r="8" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -409,16 +457,28 @@
 
     <script>
         const games = [
-            { citado: "Super Mario World", completo: "Super Mario World", lancamento: 1991, genero: "platformer", boxArt: "images/supermarioworld.jpeg" },
-            { citado: "Zelda", completo: "The Legend of Zelda: A Link to the Past", lancamento: 1992, genero: "action", boxArt: "images/zelda.jpg" },
-            { citado: "DK 1", completo: "Donkey Kong Country", lancamento: 1994, genero: "platformer", boxArt: "images/dk1.png" },
-            { citado: "DK 2", completo: "Donkey Kong Country 2: Diddy's Kong Quest", lancamento: 1995, genero: "platformer", boxArt: "images/dk2.webp" },
-            { citado: "Mortal Kombat", completo: "Mortal Kombat", lancamento: 1993, genero: "action", boxArt: "images/mortalkombat.jpg" },
+            // Comprados (28/01/26)
+            { citado: "Super Mario World", completo: "Super Mario World", lancamento: 1991, genero: "platformer", boxArt: "images/supermarioworld.jpeg", comprado: true, dataCompra: "28/01/26" },
+            { citado: "Mortal Kombat 2", completo: "Mortal Kombat II", lancamento: 1994, genero: "action", boxArt: "images/Mortal Kombat II.jpeg", comprado: true, dataCompra: "28/01/26" },
+            { citado: "DK 1", completo: "Donkey Kong Country", lancamento: 1994, genero: "platformer", boxArt: "images/dk1.png", comprado: true, dataCompra: "28/01/26" },
+            // Wishlist prioritaria
+            { citado: "Super Mario All Star", completo: "Super Mario All-Stars", lancamento: 1993, genero: "platformer", boxArt: "images/supermarioallstar.jpeg" },
+            { citado: "Super Metroid", completo: "Super Metroid", lancamento: 1994, genero: "action", boxArt: "images/supermetroid.jpeg" },
+            { citado: "Super Street Fighter II", completo: "Super Street Fighter II: The New Challengers", lancamento: 1994, genero: "action", boxArt: "images/superstreetfigheer.jpg" },
             { citado: "Street Fighter 2", completo: "Street Fighter II: The World Warrior", lancamento: 1992, genero: "action", boxArt: "images/streetfighter.jpg" },
             { citado: "ISSS Deluxe", completo: "International Superstar Soccer Deluxe", lancamento: 1995, genero: "sports", boxArt: "images/international.jpg" },
-            { citado: "Super Metroid", completo: "Super Metroid", lancamento: 1994, genero: "action", boxArt: "images/supermetroid.jpeg" },
-            { citado: "Super Mario All Star", completo: "Super Mario All-Stars", lancamento: 1993, genero: "platformer", boxArt: "images/supermarioallstar.jpeg" },
+            { citado: "Tartaruga Ninja", completo: "Teenage Mutant Ninja Turtles IV: Turtles in Time", lancamento: 1992, genero: "action", boxArt: "images/Teenage Mutant Ninja Turtles IV.jpeg" },
+            { citado: "Simpsons", completo: "The Simpsons: Bart's Nightmare", lancamento: 1992, genero: "platformer", boxArt: "images/The SimpsonsBart's Nightmare.jpeg" },
+            { citado: "Mickey", completo: "The Magical Quest Starring Mickey Mouse", lancamento: 1992, genero: "platformer", boxArt: "images/The Magical Quest Starring Mickey Mouse.png" },
+            { citado: "Mickey 2", completo: "The Great Circus Mystery Starring Mickey & Minnie", lancamento: 1994, genero: "platformer", boxArt: "images/The Great Circus Mystery Starring Mickey & Minnie.webp" },
+            { citado: "DK 2", completo: "Donkey Kong Country 2: Diddy's Kong Quest", lancamento: 1995, genero: "platformer", boxArt: "images/dk2.webp" },
+            { citado: "DK 3", completo: "Donkey Kong Country 3: Dixie Kong's Double Trouble!", lancamento: 1996, genero: "platformer", boxArt: "images/Donkey_Kong_Country_3_capa.png" },
+            // Outros
+            { citado: "Zelda", completo: "The Legend of Zelda: A Link to the Past", lancamento: 1992, genero: "action", boxArt: "images/zelda.jpg" },
+            { citado: "Mortal Kombat", completo: "Mortal Kombat", lancamento: 1993, genero: "action", boxArt: "images/mortalkombat.jpg" },
             { citado: "Yoshi's Island", completo: "Super Mario World 2: Yoshi's Island", lancamento: 1995, genero: "platformer", boxArt: "images/yoshiisland.jpg" },
+            { citado: "Goof Troop", completo: "Disney's Goof Troop", lancamento: 1993, genero: "action", boxArt: "images/gooftroop.jpg" },
+            { citado: "Batman & Robin", completo: "The Adventures of Batman & Robin", lancamento: 1994, genero: "action", boxArt: "images/the adventures of batman & Robin.jpg" },
             { citado: "Aladdin", completo: "Disney's Aladdin", lancamento: 1993, genero: "platformer", boxArt: "images/Disney's Aladdin.jpeg" },
             { citado: "Rei Leao", completo: "Disney's The Lion King", lancamento: 1994, genero: "platformer", boxArt: "images/Disney's The Lion King.jpeg" },
             { citado: "Castlevania IV", completo: "Super Castlevania IV", lancamento: 1991, genero: "action", boxArt: "images/catlevania.jpg" },
@@ -430,15 +490,10 @@
             { citado: "Top Gear", completo: "Top Gear", lancamento: 1992, genero: "racing", boxArt: "images/Top Gear.jpeg" },
             { citado: "Top Gear 2", completo: "Top Gear 2", lancamento: 1993, genero: "racing", boxArt: "images/Top Gear 2.png" },
             { citado: "Lemmings", completo: "Lemmings", lancamento: 1992, genero: "puzzle", boxArt: "images/Lemmings.jpg" },
-            { citado: "Tartaruga Ninja", completo: "Teenage Mutant Ninja Turtles IV: Turtles in Time", lancamento: 1992, genero: "action", boxArt: "images/Teenage Mutant Ninja Turtles IV.jpeg" },
-            { citado: "Simpsons", completo: "The Simpsons: Bart's Nightmare", lancamento: 1992, genero: "platformer", boxArt: "images/The SimpsonsBart's Nightmare.jpeg" },
-            { citado: "Mickey", completo: "The Magical Quest Starring Mickey Mouse", lancamento: 1992, genero: "platformer", boxArt: "images/The Magical Quest Starring Mickey Mouse.png" },
             { citado: "Double Dragon", completo: "Super Double Dragon", lancamento: 1992, genero: "action", boxArt: "images/Super Double Dragon.jpeg" },
             { citado: "Battletoads", completo: "Battletoads in Battlemaniacs", lancamento: 1993, genero: "action", boxArt: "images/Battletoads in Battlemaniacs.png" },
             { citado: "Batman", completo: "Batman Returns", lancamento: 1993, genero: "action", boxArt: "images/Batman Returns.webp" },
             { citado: "Killer Instinct", completo: "Killer Instinct", lancamento: 1995, genero: "action", boxArt: "images/Killer Instinct.jpg" },
-            { citado: "Mortal Kombat 2", completo: "Mortal Kombat II", lancamento: 1994, genero: "action", boxArt: "images/Mortal Kombat II.jpeg" },
-            { citado: "DK 3", completo: "Donkey Kong Country 3: Dixie Kong's Double Trouble!", lancamento: 1996, genero: "platformer", boxArt: "images/Donkey_Kong_Country_3_capa.png" },
             { citado: "Demon's Crest", completo: "Demon's Crest", lancamento: 1994, genero: "action", boxArt: "images/Demonscrest_us.jpg" },
             { citado: "Blackthorne", completo: "Blackthorne", lancamento: 1994, genero: "action", boxArt: "images/Blackthorne.jpg" },
             { citado: "Star Wars 1", completo: "Super Star Wars", lancamento: 1992, genero: "action", boxArt: "images/StarWars 1.jpg" }
@@ -459,7 +514,7 @@
 
         function createCard(game, index) {
             const card = document.createElement('div');
-            card.className = 'card';
+            card.className = 'card' + (game.comprado ? ' comprado' : '');
             card.dataset.genre = game.genero;
             card.style.animationDelay = (index * 0.05) + 's';
 
@@ -474,7 +529,12 @@
                     '<span>Box Art</span>' +
                   '</div>';
 
+            const compradoBadge = game.comprado
+                ? '<div class="comprado-badge">Comprado<span class="data">' + game.dataCompra + '</span></div>'
+                : '';
+
             card.innerHTML =
+                compradoBadge +
                 '<div class="box-art">' + boxArtContent + '</div>' +
                 '<div class="card-content">' +
                     '<h2 class="card-title">' + game.completo + '</h2>' +
