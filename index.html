@@ -937,14 +937,14 @@
             <div class="control-group">
                 <label>Ordenar:</label>
                 <select class="control-select" id="sort-select">
-                    <option value="default">Padrao</option>
+                    <option value="default">Padrão</option>
                     <option value="name-asc">Nome A-Z</option>
                     <option value="name-desc">Nome Z-A</option>
                     <option value="year-asc">Ano (antigo)</option>
                     <option value="year-desc">Ano (recente)</option>
                     <option value="priority">Prioridade</option>
-                    <option value="price-asc">Preco (menor)</option>
-                    <option value="price-desc">Preco (maior)</option>
+                    <option value="price-asc">Preço (menor)</option>
+                    <option value="price-desc">Preço (maior)</option>
                 </select>
             </div>
 
@@ -957,7 +957,7 @@
                 </select>
             </div>
 
-            <button class="toggle-btn" id="view-toggle" title="Alternar visualizacao">
+            <button class="toggle-btn" id="view-toggle" title="Alternar visualização">
                 <svg id="grid-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <rect x="3" y="3" width="7" height="7"/>
                     <rect x="14" y="3" width="7" height="7"/>
@@ -1017,7 +1017,7 @@
             <div class="filters" id="genre-filters">
                 <button class="filter-btn active" data-filter="all">Todos</button>
                 <button class="filter-btn" data-filter="platformer">Plataforma</button>
-                <button class="filter-btn" data-filter="action">Acao</button>
+                <button class="filter-btn" data-filter="action">Ação</button>
                 <button class="filter-btn" data-filter="racing">Corrida</button>
                 <button class="filter-btn" data-filter="sports">Esportes</button>
                 <button class="filter-btn" data-filter="rpg">RPG</button>
@@ -1061,11 +1061,11 @@
                         <div class="modal-info-value" id="modal-year"></div>
                     </div>
                     <div class="modal-info-item">
-                        <div class="modal-info-label">Genero</div>
+                        <div class="modal-info-label">Gênero</div>
                         <div class="modal-info-value" id="modal-genre"></div>
                     </div>
                     <div class="modal-info-item">
-                        <div class="modal-info-label">Preco Estimado</div>
+                        <div class="modal-info-label">Preço Estimado</div>
                         <div class="modal-info-value" id="modal-price"></div>
                     </div>
                     <div class="modal-info-item">
@@ -1126,7 +1126,7 @@
 
         const genreLabels = {
             platformer: "Plataforma",
-            action: "Acao",
+            action: "Ação",
             racing: "Corrida",
             sports: "Esportes",
             rpg: "RPG",
@@ -1135,7 +1135,7 @@
 
         const priorityLabels = {
             alta: "Alta",
-            media: "Media",
+            media: "Média",
             baixa: "Baixa"
         };
 
@@ -1326,7 +1326,7 @@
             }
 
             document.getElementById('modal-title').textContent = game.completo;
-            document.getElementById('modal-subtitle').textContent = 'Tambem conhecido como: ' + game.citado;
+            document.getElementById('modal-subtitle').textContent = 'Também conhecido como: ' + game.citado;
             document.getElementById('modal-year').textContent = game.lancamento || 'N/A';
             document.getElementById('modal-genre').textContent = genreLabels[game.genero];
             document.getElementById('modal-price').textContent = game.preco ? 'R$ ' + game.preco : 'N/A';
@@ -1358,7 +1358,7 @@
         // Export
         function exportList() {
             const filteredGames = getFilteredGames();
-            let csv = 'Nome,Ano,Genero,Preco,Prioridade,Status,Tags\n';
+            let csv = 'Nome,Ano,Gênero,Preço,Prioridade,Status,Tags\n';
 
             filteredGames.forEach(g => {
                 csv += '"' + g.completo + '",' +
