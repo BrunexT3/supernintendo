@@ -902,7 +902,7 @@
         }
     </style>
 </head>
-<body>
+<body class="light-mode">
     <div class="bg-animation"></div>
     <div class="scanlines"></div>
 
@@ -975,10 +975,10 @@
             </button>
 
             <button class="toggle-btn" id="theme-toggle" title="Alternar tema">
-                <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg id="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
                 </svg>
-                <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;">
+                <svg id="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="5"/>
                     <line x1="12" y1="1" x2="12" y2="3"/>
                     <line x1="12" y1="21" x2="12" y2="23"/>
@@ -1086,7 +1086,7 @@
             { citado: "Mortal Kombat 2", completo: "Mortal Kombat II", lancamento: 1994, genero: "action", boxArt: "images/Mortal Kombat II.jpeg", comprado: true, dataCompra: "28/01/26", preco: 120, prioridade: "alta", tags: ["2 players"] },
             { citado: "DK 1", completo: "Donkey Kong Country", lancamento: 1994, genero: "platformer", boxArt: "images/dk1.png", comprado: true, dataCompra: "28/01/26", preco: 180, prioridade: "alta", tags: ["2 players"] },
             // Wishlist prioritaria
-            { citado: "Super Mario All Star", completo: "Super Mario All-Stars", lancamento: 1993, genero: "platformer", boxArt: "images/supermarioallstar.jpeg", preco: 200, prioridade: "alta", tags: [] },
+            { citado: "Super Mario All Star", completo: "Super Mario All-Stars", lancamento: 1993, genero: "platformer", boxArt: "images/supermarioallstar.jpeg", comprado: true, dataCompra: "03/02/26", preco: 200, prioridade: "alta", tags: [] },
             { citado: "Super Metroid", completo: "Super Metroid", lancamento: 1994, genero: "action", boxArt: "images/supermetroid.jpeg", preco: 350, prioridade: "alta", tags: ["raro"] },
             { citado: "Super Street Fighter II", completo: "Super Street Fighter II: The New Challengers", lancamento: 1994, genero: "action", boxArt: "images/superstreetfigheer.jpg", preco: 180, prioridade: "alta", tags: ["2 players"] },
             { citado: "Street Fighter 2", completo: "Street Fighter II: The World Warrior", lancamento: 1992, genero: "action", boxArt: "images/streetfighter.jpg", preco: 150, prioridade: "media", tags: ["2 players"] },
@@ -1147,7 +1147,7 @@
         let currentSort = 'default';
         let searchQuery = '';
         let isListView = false;
-        let isLightMode = false;
+        let isLightMode = true;
 
         // DOM elements
         const gameListContainer = document.getElementById('game-list');
