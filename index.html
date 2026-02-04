@@ -554,6 +554,64 @@
         .tag.caro { background: rgba(249, 168, 37, 0.2); color: #b57600; }
         .tag.homebrew { background: rgba(46, 125, 50, 0.2); color: var(--snes-green); }
 
+        /* Special badges on box art */
+        .box-art-badges {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .box-art-badge {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .box-art-badge svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .box-art-badge.raro {
+            background: linear-gradient(135deg, #ff6b6b, #d32f2f);
+        }
+
+        .box-art-badge.raro svg {
+            color: white;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .box-art-badge.homebrew {
+            background: linear-gradient(135deg, #66bb6a, #2e7d32);
+        }
+
+        .box-art-badge.homebrew svg {
+            color: white;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .list-view .box-art-badges {
+            bottom: 4px;
+            right: 4px;
+        }
+
+        .list-view .box-art-badge {
+            width: 22px;
+            height: 22px;
+        }
+
+        .list-view .box-art-badge svg {
+            width: 12px;
+            height: 12px;
+        }
+
         /* Priority indicator */
         .priority-indicator {
             position: absolute;
@@ -1210,10 +1268,27 @@
                 ? '<span class="price-badge">R$ ' + game.preco + '</span>'
                 : '';
 
+            // Box art badges (raro, homebrew)
+            let boxArtBadges = '';
+            if (game.tags && game.tags.length > 0) {
+                const hasRaro = game.tags.includes('raro');
+                const hasHomebrew = game.tags.includes('homebrew');
+                if (hasRaro || hasHomebrew) {
+                    boxArtBadges = '<div class="box-art-badges">';
+                    if (hasRaro) {
+                        boxArtBadges += '<div class="box-art-badge raro" title="Raro"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg></div>';
+                    }
+                    if (hasHomebrew) {
+                        boxArtBadges += '<div class="box-art-badge homebrew" title="Homebrew"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 3C8.55 3 9 3.45 9 4V7H15V4C15 3.45 15.45 3 16 3C16.55 3 17 3.45 17 4V7H19C20.1 7 21 7.9 21 9V11C21 12.1 20.1 13 19 13H18V19C18 20.1 17.1 21 16 21H8C6.9 21 6 20.1 6 19V13H5C3.9 13 3 12.1 3 11V9C3 7.9 3.9 7 5 7H7V4C7 3.45 7.45 3 8 3ZM8 13V19H16V13H8ZM5 9V11H19V9H5Z"/></svg></div>';
+                    }
+                    boxArtBadges += '</div>';
+                }
+            }
+
             card.innerHTML =
                 priorityIndicator +
                 compradoBadge +
-                '<div class="box-art">' + boxArtContent + '</div>' +
+                '<div class="box-art">' + boxArtContent + boxArtBadges + '</div>' +
                 '<div class="card-content">' +
                     '<h2 class="card-title">' + game.completo + '</h2>' +
                     tagsHtml +
